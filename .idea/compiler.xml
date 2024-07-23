@@ -15,7 +15,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="chatbot-hashi" options="-parameters" />
+      <module name="chatbot-orange" options="-parameters" />
       <module name="chatbot-orange-application" options="-parameters" />
       <module name="chatbot-orange-domain" options="-parameters" />
       <module name="chatbot-orange-infrastructure" options="-parameters" />

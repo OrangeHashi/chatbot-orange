@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.orange.ai</groupId>
-    <artifactId>chatbot-hashi</artifactId>
+    <artifactId>chatbot-orange</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
