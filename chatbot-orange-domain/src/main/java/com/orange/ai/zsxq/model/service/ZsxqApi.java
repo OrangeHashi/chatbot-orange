@@ -22,6 +22,7 @@ import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Created with IntelliJ IDEA.
@@ -54,32 +55,55 @@ public class ZsxqApi implements IZsxqApi {
     }
 
     @Override
-    public boolean answer(String groupId, String cookies, String topicId, String text, boolean silenced) throws IOException, ParseException {
+    public boolean answer(String groupId, String cookies, String topicId, String text) throws IOException, ParseException {
         CloseableHttpClient httpclient = HttpClientBuilder.create().build();
-        HttpPost post = new HttpPost("https://api.zsxq.com/v2/topics/" + topicId + "/comments");
+        HttpPost post = new HttpPost("https://api.zsxq.com/v2/topics/" + topicId + "/comments?sort=asc&count=30&with_sticky=true");
         post.addHeader("cookie", cookies);
         post.addHeader("Content-type", "application/json; charset=UTF-8");
-        post.addHeader("user-agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 Edg/126.0.0.0\n");
-//        String paramJason = "{\n" +
-//                "  \"req_data\": {\n" +
-//                "    \"text\": \"" + text + "\\n\",\n" +
-//                "    \"image_ids\": [],\n" +
-//                "    \"mentioned_user_ids\": []\n" +
-//                "  }\n" +
-//                "}";
-        AnswerReq answerReq = new AnswerReq(new ReqData(text));
-        String paramJson = JSON.toJSONString(answerReq);
+//        post.addHeader("user-agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 Edg/126.0.0.0\n");
+        String paramJson = "{\n" +
+                "  \"req_data\": {\n" +
+                "    \"text\": \"" + text + "\",\n" +
+                "    \"image_ids\": [],\n" +
+                "    \"mentioned_user_ids\": []\n" +
+                "  }\n" +
+                "}";
+//        AnswerReq answerReq = new AnswerReq(new ReqData(text));
+//        String paramJson = JSON.toJSONString(answerReq);
 
-        StringEntity entity = new StringEntity(paramJson);
+        StringEntity entity = new StringEntity(paramJson,StandardCharsets.UTF_8);
         post.setEntity(entity);
         CloseableHttpResponse response = httpclient.execute(post);
         if (response.getCode() == HttpStatus.SC_OK) {
-            String res = EntityUtils.toString(response.getEntity());
+            String res = EntityUtils.toString(response.getEntity(),StandardCharsets.UTF_8);
             logger.info("回答星球问题结果。groupId:{},topId:{},jsonStr:{}",groupId,topicId,res);
             AnswerRes res1 = JSON.parseObject(res, AnswerRes.class);
             return res1.isSuccessed();
         } else {
             throw new RuntimeException("queryAnsweredQuestionsTopicId Err Codes is" + response.getCode());
+        }
+    }
+    public void comment() throws IOException, ParseException {
+        CloseableHttpClient httpclient = HttpClientBuilder.create().build();
+        HttpPost post = new HttpPost("https://api.zsxq.com/v2/topics/2855414112814241/comments");
+        post.addHeader("cookie","sensorsdata2015jssdkcross=%7B%22distinct_id%22%3A%22190da83df55810-02c95bcb772f8c4-4c657b58-1327104-190da83df56e3a%22%2C%22first_id%22%3A%22%22%2C%22props%22%3A%7B%22%24latest_traffic_source_type%22%3A%22%E7%9B%B4%E6%8E%A5%E6%B5%81%E9%87%8F%22%2C%22%24latest_search_keyword%22%3A%22%E6%9C%AA%E5%8F%96%E5%88%B0%E5%80%BC_%E7%9B%B4%E6%8E%A5%E6%89%93%E5%BC%80%22%2C%22%24latest_referrer%22%3A%22%22%7D%2C%22identities%22%3A%22eyIkaWRlbnRpdHlfY29va2llX2lkIjoiMTkwZGE4M2RmNTU4MTAtMDJjOTViY2I3NzJmOGM0LTRjNjU3YjU4LTEzMjcxMDQtMTkwZGE4M2RmNTZlM2EifQ%3D%3D%22%2C%22history_login_id%22%3A%7B%22name%22%3A%22%22%2C%22value%22%3A%22%22%7D%2C%22%24device_id%22%3A%22190da83df55810-02c95bcb772f8c4-4c657b58-1327104-190da83df56e3a%22%7D; zsxq_access_token=2D2D662C-F2A0-8DB9-AC2F-9214E00F440E_6EB5CDCE87185F9D; zsxqsessionid=2835f6514c64da62687ad7b2dd9230d9; abtest_env=beta");
+        post.addHeader("Content-type", "application/json; charset=UTF-8");
+        String paramJason = "{\n" +
+                "  \"req_data\": {\n" +
+                "    \"text\": \"你好\\n\",\n" +
+                "    \"image_ids\": [],\n" +
+                "    \"mentioned_user_ids\": []\n" +
+                "  }\n" +
+                "}";
+
+        StringEntity entity = new StringEntity(paramJason);
+        post.setEntity(entity);
+        CloseableHttpResponse response = httpclient.execute(post);
+        if (response.getCode() == HttpStatus.SC_OK) {
+            String res = EntityUtils.toString(response.getEntity());
+            System.out.println(res);
+        } else {
+            System.out.println(response.getCode());
         }
     }
 }

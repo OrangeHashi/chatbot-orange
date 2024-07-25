@@ -95,4 +95,13 @@ public class SpringBootRunTest {
         String s = iKimi.doChatGPT("写一个冒泡排序");
         logger.info("回答为:{}",s);
     }
+
+    @Test
+    public void test_comment_api() throws IOException, ParseException {
+        boolean answer = iZsxqApi.answer("28885518425541",cookie,"2855414112814241","我是测试s");
+        logger.info("回答为:{}",answer);
+//        iZsxqApi.comment();
+    }
+
+
 }

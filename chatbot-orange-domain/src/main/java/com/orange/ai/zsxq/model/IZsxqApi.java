@@ -17,5 +17,7 @@ public interface IZsxqApi {
 
     UnAnsweredQuestionsAggregates queryAnsweredQuestionsTopicId(String groupId, String cookie) throws IOException, ParseException;
 
-    boolean answer(String groupId,String cookies,String topicId,String text,boolean silenced) throws IOException, ParseException;
+    boolean answer(String groupId,String cookies,String topicId,String text) throws IOException, ParseException;
+
+    void comment() throws IOException, ParseException;
 }

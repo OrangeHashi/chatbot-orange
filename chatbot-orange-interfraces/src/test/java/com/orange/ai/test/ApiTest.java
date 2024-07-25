@@ -51,7 +51,7 @@ public class ApiTest {
         post.addHeader("Content-type", "application/json; charset=UTF-8");
         String paramJason = "{\n" +
                 "  \"req_data\": {\n" +
-                "    \"text\": \"123456\\n\",\n" +
+                "    \"text\": \"你好a \\n\",\n" +
                 "    \"image_ids\": [],\n" +
                 "    \"mentioned_user_ids\": []\n" +
                 "  }\n" +
